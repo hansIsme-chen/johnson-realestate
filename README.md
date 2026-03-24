@@ -40,7 +40,7 @@
 
 ## 🎓 **About the Developer**
 
-* [cite_start]**Name**: **陳思瀚 (Suhan Chen)** [cite: 1]
+* [cite_start]**Name**: **陳思瀚 (Hans Chen)** [cite: 1]
 * **Education**: 
     * [cite_start]**The University of Queensland** - 數據科學學系 (Data Science) [cite: 11]
     * [cite_start]**實踐大學** - 資訊科技與管理學系 (IT & Management) [cite: 6]
