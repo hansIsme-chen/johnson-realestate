@@ -1,0 +1,144 @@
+{% extends 'houses/base.html' %}
+
+{% block content %}
+<style>
+    /* 讓右側表單在滾動時固定在頂部 */
+    @media (min-width: 992px) {
+        .sticky-sidebar {
+            position: sticky;
+            top: 90px;
+            z-index: 100;
+        }
+    }
+    .spec-table th { background-color: #f8f9fa; width: 30%; }
+    .property-header { padding: 40px 0; background: #fff; border-bottom: 1px solid #eee; mb-4; }
+    .badge-category { font-size: 0.9rem; padding: 5px 15px; }
+</style>
+
+<div class="property-header mb-4">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首頁</a></li>
+                <li class="breadcrumb-item active">{{ house.location }}</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <span class="badge bg-primary badge-category mb-2">
+                    {% if house.category == 'project' %}全新建案{% else %}優質中古{% endif %}
+                </span>
+                <h1 class="fw-bold">{{ house.title }}</h1>
+                <p class="text-muted fs-5"><i class="fa-solid fa-location-dot"></i> {{ house.address }}</p>
+            </div>
+            <div class="text-end">
+                <h2 class="text-danger fw-bold display-6">TWD ${{ house.price }}</h2>
+                <p class="text-muted">單價估計中...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="mb-4">
+                <img src="{% if house.image %}{{ house.image.url }}{% else %}https://placehold.co/1200x800?text=No+Image{% endif %}" 
+                     class="img-fluid rounded shadow-sm w-100" style="max-height: 500px; object-fit: cover;">
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3"><i class="fa-solid fa-circle-info text-primary"></i> 物件描述</h4>
+                    <p class="lead" style="white-space: pre-line;">{{ house.description }}</p>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-primary"></i> 詳細規格</h4>
+                    <table class="table table-bordered spec-table">
+                        <tr>
+                            <th>房間數量</th>
+                            <td>{{ house.rooms }} 房</td>
+                            <th>衛浴數量</th>
+                            <td>{{ house.bathrooms }} 衛</td>
+                        </tr>
+                        <tr>
+                            <th>建物坪數</th>
+                            <td>{{ house.square_feet }} 坪</td>
+                            <th>所在區域</th>
+                            <td>{{ house.location }}</td>
+                        </tr>
+                        <tr>
+                            <th>物件編號</th>
+                            <td>#{{ house.id|stringformat:"05d" }}</td>
+                            <th>更新時間</th>
+                            <td>今天</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3"><i class="fa-solid fa-map-location-dot text-primary"></i> 地理位置</h4>
+                    <div class="ratio ratio-16x9 shadow-sm rounded overflow-hidden">
+                    <iframe 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        scrolling="no" 
+        marginheight="0" 
+        marginwidth="0" 
+        src="https://maps.google.com/maps?q={{ house.address|urlencode }}&hl=zh-TW&z=16&output=embed">
+    </iframe>
+</div>
+                    <p class="mt-3 text-muted small"><i class="fa-solid fa-circle-info"></i> 地址：{{ house.address }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="sticky-sidebar">
+                <div class="card border-0 shadow-lg" style="border-top: 5px solid #0d6efd !important;">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-3">預約看房</h4>
+                        <p class="text-muted small mb-4">留下您的聯絡資訊，專業經紀人將在 24 小時內與您聯繫。</p>
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">您的姓名</label>
+                                {{ form.name }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">電話號碼</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">詢問內容</label>
+                                {{ form.message }}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3 shadow">
+                                <i class="fa-solid fa-paper-plane"></i> 送出預約
+                            </button>
+                        </form>
+
+                        <div class="text-center text-muted mb-3">— 或 —</div>
+
+                        <a href="https://wa.me/你的電話?text=我對這個物件有興趣：{{ house.title }}" 
+                           class="btn btn-success w-100 py-3 fw-bold" target="_blank">
+                           <i class="fab fa-whatsapp"></i> WhatsApp 線上諮詢
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-3 p-3 bg-light rounded text-center">
+                    <p class="small text-muted mb-0"><i class="fa-solid fa-shield-halved"></i> 您的資料將受到加密保護，僅供預約使用。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
