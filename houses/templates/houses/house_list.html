@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的房仲平台</title>
+</head>
+<body>
+    <h1>精選物件列表</h1>
+    <hr>
+   {% extends 'houses/base.html' %}
+
+{% block content %}
+<section class="hero-section text-center">
+    <div class="bg-primary text-white py-5 mb-5">
+        <div class="container text-center">
+            <h1 class="fw-bold">尋找您的理想家園</h1>
+            <p class="lead">目前共有 {{ houses.count }} 個精選物件供您挑選</p>
+        </div>
+    </div>
+
+    <div class="container ">
+        <div class="card shadow-lg mx-auto p-3" style="max-width: 900px; border-radius: 50px; background: rgba(255,255,255,0.9);">
+            <div class="card-body p-0">
+                <form method="GET" action="{% url 'house_list' %}" class="row g-2 align-items-center">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0"><i class="fa-solid fa-search text-muted"></i></span>
+                            <input type="text" name="q" class="form-control border-0 bg-transparent" placeholder="搜尋物件名稱..." value="{{ request.GET.q|default_if_none:'' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0"><i class="fa-solid fa-location-dot text-muted"></i></span>
+                            <input type="text" name="location" class="form-control border-0 bg-transparent" placeholder="輸入區域 (例如: 台北)" value="{{ request.GET.location|default_if_none:'' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold" style="border-radius: 50px;">搜尋</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<div class="container mt-5">
+    <div class="row">
+        {% for house in houses %}
+        <div class="col-md-4 mb-4">
+            <div class="card house-card h-100">
+                <div class="position-relative">
+                    <img src="{% if house.cover_image %}{{ house.cover_image.url }}{% else %}https://placehold.co/600x400?text=No+Image{% endif %}" 
+                         class="card-img-top" alt="{{ house.title }}">
+                    <span class="position-absolute top-0 end-0 bg-danger text-white px-3 py-1 m-3 rounded-pill fw-bold small">
+                        {% if house.category == 'project' %}新開案{% else %}中古屋{% endif %}
+                    </span>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-truncate">{{ house.title }}</h5>
+                    <p class="text-danger fs-4 fw-bold">TWD ${{ house.price }}</p>
+                    <p class="card-text text-muted small">
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ house.address|urlencode }}" 
+                        target="_blank" class="text-decoration-none text-muted">
+                         <i class="fa-solid fa-location-dot"></i> {{ house.location }} | {{ house.address }}
+                        </a>
+                    </p>
+                    <p class="card-text text-truncate text-muted">{{ house.description }}</p>
+                    
+                    <hr class="text-muted">
+                    <div class="d-flex justify-content-between text-muted small fw-bold">
+                        <span class="spec-item"><i class="fa-solid fa-bed text-secondary"></i> {{ house.rooms }} 房</span>
+                        <span class="spec-item"><i class="fa-solid fa-bath text-info"></i> {{ house.bathrooms }} 衛</span>
+                        <span class="spec-item"><i class="fa-solid fa-ruler-combined text-warning"></i> {{ house.square_feet }} 坪</span>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-white border-top-0 d-flex gap-2 pb-3 pt-0">
+                    <a href="{% url 'house_detail' house.pk %}" class="btn btn-primary w-50 btn-action btn-sm">查看詳情</a>
+                    <a href="https://wa.me/你的電話號碼?text=您好，我對這個物件有興趣：{{ house.title }}" 
+                       class="btn btn-success w-50 btn-action btn-sm" target="_blank">
+                       <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h4 class="text-muted">目前暫無符合條件的物件，請嘗試其他關鍵字或區域！</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

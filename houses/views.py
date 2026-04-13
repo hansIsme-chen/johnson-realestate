@@ -3,6 +3,13 @@ from django.contrib import messages  # 訊息模組
 from .models import House
 from .forms import ContactForm
 
+def index(request):
+    """首頁：公司介紹"""
+    # 這裡可以抓取最新的 3 個物件放在首頁當亮點
+    featured_houses = House.objects.filter(is_sold=False).order_by('-created_at')[:3]
+    return render(request, 'houses/index.html', {
+        'featured_houses': featured_houses
+    })
 
 def house_list(request):
     # 1. 先從資料庫抓出「所有」物件
@@ -20,8 +27,15 @@ def house_list(request):
     if search_location:
         houses = houses.filter(location__icontains=search_location)
 
+    """搜尋頁：原本的物件列表與搜尋邏輯"""
+    query = request.GET.get('q')
+    houses = House.objects.all()
+    
+    if query:
+        houses = houses.filter(title__icontains=query)    
+
     # 4. 把過濾後的結果丟給網頁
-    return render(request, 'houses/index.html', {'houses': houses})
+    return render(request, 'houses/house_list.html', {'houses': houses})
 
 # 詳情頁的部分
 def house_detail(request, pk):
