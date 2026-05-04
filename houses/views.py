@@ -11,7 +11,12 @@ def index(request):
         'featured_houses': featured_houses
     })
 
+def property_info(request):
+    "房產資訊"
+    return render(request, 'houses/property_info.html')
+
 def house_list(request):
+    "房地產項目"
     # 1. 先從資料庫抓出「所有」物件
     houses = House.objects.all()
 
@@ -36,6 +41,12 @@ def house_list(request):
 
     # 4. 把過濾後的結果丟給網頁
     return render(request, 'houses/house_list.html', {'houses': houses})
+
+def services(request):
+    return render(request, 'houses/services.html')
+
+def activities(request):
+    return render(request, 'houses/activities.html')
 
 # 詳情頁的部分
 def house_detail(request, pk):

@@ -77,13 +77,26 @@
         </button>
         
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto"> <li class="nav-item">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active fw-bold{% endif %}" href="{% url 'index' %}">首頁</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active fw-bold{% endif %}" 
                        href="{% url 'index' %}">關於我們</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'property_info' %}">房產資訊</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'house_list' %}active fw-bold{% endif %}" 
-                       href="{% url 'house_list' %}">精選物件</a>
+                       href="{% url 'house_list' %}">房地產項目</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">服務</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'activities' %}">活動</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}#contact-form">聯絡我們</a>

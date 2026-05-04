@@ -1,6 +1,24 @@
-venv/
+# Python 編譯暫存檔
 __pycache__/
-*.pyc
-db.sqlite3
+*.py[cod]
+*$py.class
+
+# 虛擬環境
+venv/
+env/
+ENV/
+
+# 資料庫 (不建議上傳，避免覆蓋別人的開發資料)
+*.sqlite3
+
+# 媒體檔案 (使用者上傳的房子照片，不進 Git)
 media/
+
+# 編輯器設定 (VS Code)
 .vscode/
+
+# 敏感資訊 (未來若有金鑰會放在這)
+.env
+
+# 系統檔案 (如果是 Mac 使用者會產生這個)
+.DS_Store
