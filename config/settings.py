@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-c$hx!t57r7&uf)q_sp)sp_ucd=p((v-f9f$lv4h@_wn6@uc@!=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hans891214.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'houses',
 ]
 
@@ -116,7 +117,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# 這是網址列顯示的路徑
 STATIC_URL = 'static/'
+
+# 放靜態檔案的地方
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# 執行 collectstatic 時，檔案要「集中搬去」的地方
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # 瀏覽器讀取圖片的網址前綴
 MEDIA_URL = '/media/'

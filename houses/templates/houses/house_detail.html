@@ -140,8 +140,8 @@
                             <td>{{ house.location }}</td>
                         </tr>
                         <tr>
-                            <th>物件類別</th>
-                            <td>{% if house.category == 'project' %}新開案{% else %}中古屋{% endif %}</td>
+                            <th>物件狀態</th>
+                            <td>{% if house.category == 'project' %}新成屋{% else %}中古屋{% endif %}</td>
                             <th>更新時間</th>
                             <td>{{ house.created_at|date:"Y-m-d" }}</td>
                         </tr>

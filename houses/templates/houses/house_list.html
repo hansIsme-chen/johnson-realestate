@@ -9,6 +9,7 @@
    {% extends 'houses/base.html' %}
 
 {% block content %}
+{% load humanize %}
 <style>
     /* 玫瑰金配色變數 */
     :root {
@@ -123,7 +124,17 @@
                 {% endif %}
                 
                 <div class="card-body p-4">
-                    <div class="price-badge mb-2">TWD ${{ house.price }}</div>
+                    <div class="price-badge mb-2">
+                        RM 
+                        {% if house.is_starting_price %}
+                            <!-- 勾選時：自動補上「萬起」 -->
+                            {{ house.price }} 萬起
+                        {% else %}
+                            {# 不勾時：自動加上千分位 #}
+                            {# intcomma 會把 "1000000" 變成 "1,000,000" #}
+                            {{ house.price|intcomma }}
+                        {% endif %}
+                    </div>
                     
                     <h5 class="fw-bold">{{ house.title }}</h5>
                     <p class="text-muted small">
@@ -131,7 +142,7 @@
                     </p>
                     
                     <div class="d-flex justify-content-between text-muted mb-4 small">
-                        <span><i class="fa-solid fa-bed property-icon"></i> {{ house.rooms }} 房</span>
+                        <span><i class="fa-solid fa-bed property-icon"></i>{{ house.rooms }} {% if "-" in house.rooms %}間{% else %}房{% endif %}</span>
                         <span><i class="fa-solid fa-bath property-icon"></i> {{ house.bathrooms }} 衛</span>
                         <span><i class="fa-solid fa-expand property-icon"></i> {{ house.square_feet }} 坪</span>
                     </div>

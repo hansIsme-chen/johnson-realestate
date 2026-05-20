@@ -3,11 +3,12 @@ from django.db import models
 # 房屋物件模型
 class House(models.Model):
     title = models.CharField(max_length=200, verbose_name="物件標題")
-    price = models.DecimalField(max_digits=12, decimal_places=0, verbose_name="總價(元)")
+    price = models.CharField(max_length=100, verbose_name="價格區間", help_text="勾選下方時填寫數字即可(如: 100-500)；不勾選時請填寫完整格式(如: 10000000)")
+    is_starting_price = models.BooleanField(default=True, verbose_name="是否顯示『萬起』")
     address = models.CharField(max_length=255, verbose_name="詳細地址")
     description = models.TextField(verbose_name="物件描述")
-    rooms = models.IntegerField(default=3, verbose_name="房間數")
-    bathrooms = models.IntegerField(default=2, verbose_name="衛浴數")
+    rooms = models.CharField(max_length=50, default=3, verbose_name="房間數", help_text="可以填寫範圍，例如：1-3")
+    bathrooms = models.CharField(max_length=50, default=2, verbose_name="衛浴數", help_text="可以填寫範圍，例如：2-3")
     square_feet = models.IntegerField(default=40, verbose_name="坪數")
     is_sold = models.BooleanField(default=False, verbose_name="是否已售出")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -15,10 +16,10 @@ class House(models.Model):
 
     # --- 以下是從下面搬上來的欄位，房子才有類別跟區域 ---
     CATEGORY_CHOICES = [
-        ('project', '新開案'),
+        ('project', '新成屋'),
         ('subsale', '中古屋'),
     ]
-    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='subsale', verbose_name="物件類別")
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='subsale', verbose_name="物件狀態")
     location = models.CharField(max_length=100, default='台北', verbose_name="區域")
 
     def __str__(self):  # 正確的寫法是 __str__
